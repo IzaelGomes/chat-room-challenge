@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  api-chat-pg:
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=12345678
+      - POSTGRESQL_DATABASE=chat
