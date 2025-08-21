@@ -1,10 +1,13 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
-    <Box>
-      <Text color='red'>Hello World</Text>
-    </Box>
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='*' element={<NotFound />} />
+    </Routes>
   );
 }
 
