@@ -96,3 +96,5 @@ public
 # Storybook build outputs
 .out
 .storybook-out
+
+/src/generated/prisma
