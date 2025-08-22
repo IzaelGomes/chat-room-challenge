@@ -1,4 +1,4 @@
-import { z, ZodObject, ZodIssue } from 'zod';
+import { z, ZodObject } from 'zod';
 import { AppError } from '../../app/error/app-error';
 
 export function validateSchema<T extends ZodObject>(
@@ -8,9 +8,9 @@ export function validateSchema<T extends ZodObject>(
   const validation = schema.safeParse(value);
 
   if (validation.success === true) return validation.data;
-  console.log(validation.error.issues);
+
   throw new AppError(
-    `${validation.error.issues.map((issue: ZodIssue) => issue.message)}`,
+    `${validation.error.issues.map((issue: z.core.$ZodIssue) => issue.message)}`,
     400
   );
 }
