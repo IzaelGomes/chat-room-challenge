@@ -14,81 +14,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Modelo de usuário
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  username  String   @unique
-  name      String?
-  avatar    String?
+model Room {
+  id        String   @id @default(uuid())
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // Relacionamentos
-  messages Message[]
-  rooms    RoomMember[]
-
-  @@map("users")
+  messages  Message[]
 }
 
-// Modelo de sala de chat
-model Room {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  isPrivate   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relacionamentos
-  messages Message[]
-  members  RoomMember[]
-
-  @@map("rooms")
-}
-
-// Modelo de participação em salas
-model RoomMember {
-  id     String @id @default(cuid())
-  userId String
-  roomId String
-  role   Role   @default(MEMBER)
-
-  // Relacionamentos
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, roomId])
-  @@map("room_members")
-}
-
-// Modelo de mensagem
 model Message {
-  id        String      @id @default(cuid())
+  id        String   @id @default(uuid())
   content   String
-  type      MessageType @default(TEXT)
-  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  room      Room     @relation(fields: [roomId], references: [id])
   roomId    String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-
-  // Relacionamentos
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
-
-  @@map("messages")
-}
-
-// Enums
-enum Role {
-  ADMIN
-  MODERATOR
-  MEMBER
-}
-
-enum MessageType {
-  TEXT
-  IMAGE
-  FILE
-  SYSTEM
 }
