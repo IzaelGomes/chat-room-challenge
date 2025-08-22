@@ -17,7 +17,7 @@ datasource db {
 model Room {
   id        String   @id @default(uuid())
   name      String
-  createdAt DateTime @default(now())
+  createdAt DateTime 
   updatedAt DateTime @updatedAt
   messages  Message[]
 }
@@ -25,7 +25,7 @@ model Room {
 model Message {
   id        String   @id @default(uuid())
   content   String
-  createdAt DateTime @default(now())
+  createdAt DateTime 
   updatedAt DateTime @updatedAt
   room      Room     @relation(fields: [roomId], references: [id])
   roomId    String
