@@ -5,9 +5,10 @@ import Header from './Header';
 
 interface ChatLayoutProps {
   children: ReactNode;
+  roomName?: string;
 }
 
-function ChatLayout({ children }: ChatLayoutProps) {
+function ChatLayout({ children, roomName }: ChatLayoutProps) {
   return (
     <Flex h='100vh' bg='gray.50' _dark={{ bg: 'gray.900' }}>
       <Box
@@ -28,7 +29,7 @@ function ChatLayout({ children }: ChatLayoutProps) {
           borderColor='gray.200'
           _dark={{ bg: 'gray.800', borderColor: 'gray.700' }}
         >
-          <Header />
+          <Header roomName={roomName} />
         </Box>
 
         <Box flex='1' overflow='hidden'>

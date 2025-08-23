@@ -10,11 +10,14 @@ import {
 import { FiPlus, FiHash } from 'react-icons/fi';
 import { useRooms } from '../../hooks/useRooms';
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import CreateRoomModal from '../rooms/CreateRoomModal';
 
 function Sidebar() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { data: rooms, isLoading, error } = useRooms();
+  const navigate = useNavigate();
+  const { roomId } = useParams<{ roomId: string }>();
 
   return (
     <>
@@ -50,7 +53,7 @@ function Sidebar() {
             px={2}
             py={1}
           >
-            SALAS DE TEXTO
+            SALAS
           </Text>
 
           {isLoading && (
@@ -104,10 +107,15 @@ function Sidebar() {
               justifyContent='flex-start'
               size='sm'
               fontWeight='normal'
-              color='gray.600'
-              _dark={{ color: 'gray.400' }}
+              color={roomId === room.id ? 'teal.600' : 'gray.600'}
+              bg={roomId === room.id ? 'teal.50' : 'transparent'}
+              _dark={{
+                color: roomId === room.id ? 'teal.400' : 'gray.400',
+                bg: roomId === room.id ? 'teal.900' : 'transparent',
+              }}
               _hover={{ bg: 'gray.200', _dark: { bg: 'gray.700' } }}
               borderRadius='md'
+              onClick={() => navigate(`/rooms/${room.id}`)}
             >
               <Flex align='center' w='full'>
                 <FiHash style={{ marginRight: '8px' }} />
