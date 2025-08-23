@@ -1,6 +1,7 @@
 import 'express-async-errors';
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import './infra/config/env';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -22,6 +23,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 app.use(router);
 
 app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
