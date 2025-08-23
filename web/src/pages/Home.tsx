@@ -1,10 +1,4 @@
-import {
-  Box,
-  Heading,
-  Text,
-  Link as ChakraLink,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Heading, Text, VStack, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 function Home() {
@@ -19,9 +13,11 @@ function Home() {
           usuários.
         </Text>
         <VStack gap={4}>
-          <ChakraLink as={Link} href='/chat' colorScheme='teal' w='200px'>
-            Entrar no Chat
-          </ChakraLink>
+          <Link to='/rooms'>
+            <Button colorScheme='teal' size='lg' w='200px'>
+              Entrar nas Salas
+            </Button>
+          </Link>
         </VStack>
       </VStack>
     </Box>
