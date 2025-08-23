@@ -6,12 +6,13 @@ import {
 
 export class MessageRepository implements MessageRepositoryInterface {
   async createMessage(
-    message: Omit<Message, 'id' | 'createdAt' | 'updatedAt'>
+    message: Omit<Message, 'id' | 'updatedAt'>
   ): Promise<Message> {
     const createdMessage = await prisma.message.create({
       data: {
         content: message.content,
         roomId: message.roomId,
+        createdAt: message.createdAt,
       },
     });
 
