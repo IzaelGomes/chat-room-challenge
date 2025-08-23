@@ -15,7 +15,9 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const roomsApi = {
   getRooms: async (): Promise<Room[]> => {
-    const response = await fetch(`${API_BASE_URL}/rooms`);
+    const response = await fetch(`${API_BASE_URL}/rooms`, {
+      credentials: 'include',
+    });
     if (!response.ok) {
       throw new Error('Erro ao buscar salas');
     }
@@ -28,6 +30,7 @@ const roomsApi = {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify(data),
     });
     if (!response.ok) {
@@ -37,7 +40,9 @@ const roomsApi = {
   },
 
   getRoomById: async (id: string): Promise<Room> => {
-    const response = await fetch(`${API_BASE_URL}/rooms/${id}`);
+    const response = await fetch(`${API_BASE_URL}/rooms/${id}`, {
+      credentials: 'include',
+    });
     if (!response.ok) {
       throw new Error('Erro ao buscar sala');
     }
