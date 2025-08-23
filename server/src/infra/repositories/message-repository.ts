@@ -12,6 +12,7 @@ export class MessageRepository implements MessageRepositoryInterface {
       data: {
         content: message.content,
         roomId: message.roomId,
+        userId: message.userId,
         createdAt: message.createdAt,
       },
     });
@@ -22,6 +23,7 @@ export class MessageRepository implements MessageRepositoryInterface {
       createdAt: createdMessage.createdAt,
       updatedAt: createdMessage.updatedAt,
       roomId: createdMessage.roomId,
+      userId: createdMessage.userId,
     };
   }
 
@@ -29,6 +31,14 @@ export class MessageRepository implements MessageRepositoryInterface {
     const messages = await prisma.message.findMany({
       where: { roomId },
       orderBy: { createdAt: 'asc' },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
     });
 
     return messages.map((message: Message) => ({
@@ -37,6 +47,8 @@ export class MessageRepository implements MessageRepositoryInterface {
       createdAt: message.createdAt,
       updatedAt: message.updatedAt,
       roomId: message.roomId,
+      userId: message.userId,
+      user: message.user,
     }));
   }
 }

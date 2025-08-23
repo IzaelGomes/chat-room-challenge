@@ -30,6 +30,8 @@ export class RoomRepository implements RoomRepositoryInterface {
         createdAt: message.createdAt,
         updatedAt: message.updatedAt,
         roomId: message.roomId,
+        userId: message.userId,
+        user: message.user,
       })),
     };
   }
@@ -40,6 +42,14 @@ export class RoomRepository implements RoomRepositoryInterface {
       include: {
         messages: {
           orderBy: { createdAt: 'asc' },
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
         },
       },
     });
@@ -53,12 +63,14 @@ export class RoomRepository implements RoomRepositoryInterface {
       name: room.name,
       createdAt: room.createdAt,
       updatedAt: room.updatedAt,
-      messages: room.messages.map((message: Message) => ({
+      messages: room.messages.map((message: any) => ({
         id: message.id,
         content: message.content,
         createdAt: message.createdAt,
         updatedAt: message.updatedAt,
         roomId: message.roomId,
+        userId: message.userId,
+        user: message.user,
       })),
     };
   }
@@ -68,22 +80,32 @@ export class RoomRepository implements RoomRepositoryInterface {
       include: {
         messages: {
           orderBy: { createdAt: 'asc' },
+          include: {
+            user: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
         },
       },
       orderBy: { createdAt: 'desc' },
     });
 
-    return rooms.map((room: Room) => ({
+    return rooms.map((room: any) => ({
       id: room.id,
       name: room.name,
       createdAt: room.createdAt,
       updatedAt: room.updatedAt,
-      messages: room.messages.map((message: Message) => ({
+      messages: room.messages.map((message: any) => ({
         id: message.id,
         content: message.content,
         createdAt: message.createdAt,
         updatedAt: message.updatedAt,
         roomId: message.roomId,
+        userId: message.userId,
+        user: message.user,
       })),
     }));
   }
@@ -113,6 +135,8 @@ export class RoomRepository implements RoomRepositoryInterface {
         createdAt: message.createdAt,
         updatedAt: message.updatedAt,
         roomId: message.roomId,
+        userId: message.userId,
+        user: message.user,
       })),
     };
   }

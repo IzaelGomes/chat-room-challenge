@@ -4,6 +4,11 @@ export type Message = {
   createdAt: Date;
   updatedAt: Date;
   roomId: string;
+  userId: string;
+  user?: {
+    id: string;
+    username: string;
+  };
 };
 
 export interface MessageRepositoryInterface {
