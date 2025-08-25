@@ -37,11 +37,8 @@ export class WebSocketService {
 
   setupSocketEvents(): void {
     this.io.on('connection', async (socket: AuthenticatedSocket) => {
-      console.log(`Cliente conectado: ${socket.id}`);
-
       socket.on('join-room', async (roomId: string, user: UserConnected) => {
         try {
-          console.log('entrou na sala', user);
           const result = await this.getRoomByIdUseCase.execute({
             id: roomId,
           });
@@ -122,7 +119,6 @@ export class WebSocketService {
 
         rooms.forEach(roomId => {
           if (roomId !== socket.id) {
-            console.log(`Notificando saída na sala ${roomId}`);
             socket.to(roomId).emit('user-left', {
               userId: socket.user?.id || socket.id,
               username: socket.user?.username || 'Usuário desconectado',
