@@ -46,7 +46,6 @@ const io = new Server(server, {
 });
 
 io.use((socket, next) => {
-  console.log('caiu aqui');
   const cookies = socket.request['headers']['cookie'];
   const cookieString = cookies
     ?.split(';')
