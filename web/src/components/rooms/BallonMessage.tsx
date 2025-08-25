@@ -2,6 +2,7 @@ import { Box, Text } from '@chakra-ui/react';
 import type { Message } from './ChatRoom';
 import { useAuth } from '@/hooks/useAuth';
 import { formatTime } from '@/utils';
+import { useMemo } from 'react';
 
 interface BallonMessageProps {
   message: Message;
@@ -10,7 +11,10 @@ interface BallonMessageProps {
 function BallonMessage({ message }: BallonMessageProps) {
   const { data: authData } = useAuth();
 
-  const isSelfUser = message.userId === authData?.user.id;
+  const isSelfUser = useMemo(
+    () => message.userId === authData?.user.id,
+    [message.userId, authData?.user.id]
+  );
 
   return (
     <Box

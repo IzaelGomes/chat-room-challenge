@@ -10,7 +10,7 @@ import {
   SkeletonText,
   Heading,
 } from '@chakra-ui/react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { FiSend, FiHash } from 'react-icons/fi';
 import { useWebSocket } from '../../hooks/useWebSocket';
 import { useRoom } from '../../hooks/useRooms';
@@ -59,19 +59,22 @@ function ChatRoom({ roomId }: ChatRoomProps) {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = useCallback(() => {
     if (messageInput.trim()) {
       sendMessage(messageInput);
       setMessageInput('');
     }
-  };
+  }, [messageInput, sendMessage]);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSendMessage();
+      }
+    },
+    [handleSendMessage]
+  );
 
   if (isLoadingRoom) {
     return (
