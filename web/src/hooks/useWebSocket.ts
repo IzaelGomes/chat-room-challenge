@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from './useAuth';
+import { toaster } from '@/components/ui/toaster';
 
 interface Message {
   id: string;
@@ -21,6 +22,7 @@ interface UseWebSocketProps {
 
 export const useWebSocket = ({ roomId }: UseWebSocketProps = {}) => {
   const [socket, setSocket] = useState<Socket | null>(null);
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,43 +32,55 @@ export const useWebSocket = ({ roomId }: UseWebSocketProps = {}) => {
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
-    const newSocket = io(apiUrl);
+    const newSocket = io(apiUrl, {
+      withCredentials: true,
+      transports: ['websocket', 'polling'],
+    });
     socketRef.current = newSocket;
     setSocket(newSocket);
 
     newSocket.on('connect', () => {
-      console.log('Conectado ao WebSocket');
       setIsConnected(true);
       setError(null);
     });
 
     newSocket.on('disconnect', () => {
-      console.log('Desconectado do WebSocket');
       setIsConnected(false);
     });
 
     newSocket.on('error', (errorData: { message: string }) => {
-      console.error('Erro do WebSocket:', errorData.message);
       setError(errorData.message);
     });
 
     newSocket.on('room-messages', (roomMessages: Message[]) => {
-      console.log('Mensagens da sala recebidas:', roomMessages);
       setMessages(roomMessages);
     });
 
     newSocket.on('new-message', (message: Message) => {
-      console.log('Nova mensagem recebida:', message);
       setMessages((prev) => [...prev, message]);
     });
 
-    newSocket.on('user-joined', (data: { userId: string; roomId: string }) => {
-      console.log('Usuário entrou na sala:', data);
-    });
+    newSocket.on(
+      'user-joined',
+      (data: { userId: string; username: string; roomId: string }) => {
+        toaster.create({
+          type: 'success',
+          title: 'Usuário entrou na sala',
+          description: `${data.username} entrou na sala`,
+        });
+      }
+    );
 
-    newSocket.on('user-left', (data: { userId: string; roomId: string }) => {
-      console.log('Usuário saiu da sala:', data);
-    });
+    newSocket.on(
+      'user-left',
+      (data: { userId: string; username: string; roomId: string }) => {
+        toaster.create({
+          type: 'info',
+          title: 'Usuário saiu da sala',
+          description: `${data.username} saiu da sala`,
+        });
+      }
+    );
 
     return () => {
       newSocket.close();
@@ -75,31 +89,26 @@ export const useWebSocket = ({ roomId }: UseWebSocketProps = {}) => {
 
   useEffect(() => {
     if (socket && roomId) {
-      console.log('Entrando na sala:', roomId);
-      socket.emit('join-room', roomId);
+      socket.emit('join-room', roomId, authData?.user);
 
       return () => {
-        console.log('Saindo da sala:', roomId);
-        socket.emit('leave-room', roomId);
+        socket.emit('leave-room', roomId, authData?.user);
         setMessages([]);
       };
     }
-  }, [socket, roomId]);
+  }, [socket, roomId, authData?.user]);
 
   const sendMessage = (content: string) => {
     if (socket && roomId && content.trim() && authData) {
-      console.log('Enviando mensagem via WebSocket...');
       socket.emit('send-message', {
         roomId,
         content: content.trim(),
         user: authData.user,
       });
     } else {
-      console.warn('Condições não atendidas para enviar mensagem:', {
-        hasSocket: !!socket,
-        hasRoomId: !!roomId,
-        hasContent: !!content.trim(),
-        hasAuth: !!authData,
+      toaster.create({
+        title: 'Erro ao enviar mensagem',
+        description: 'Não foi possível enviar a mensagem',
       });
     }
   };

@@ -183,7 +183,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
           <Input
             value={messageInput}
             onChange={(e) => setMessageInput(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             placeholder='Digite sua mensagem...'
             disabled={!isConnected || !authData}
             maxLength={500}
