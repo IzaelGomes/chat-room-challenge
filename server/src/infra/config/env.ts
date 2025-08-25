@@ -6,8 +6,8 @@ dotenv.config();
 const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
   DATABASE_URL: z.url(),
-  FRONTEND_URL: z.string().url().default('http://localhost:5173'),
-  JWT_SECRET: z.string().default('your-super-secret-jwt-key'),
+  FRONTEND_URL: z.url().default('http://localhost:5173'),
+  JWT_SECRET: z.string(),
   JWT_EXPIRES_IN: z.string().default('7d'),
 });
 
