@@ -11,6 +11,7 @@ import { WebSocketService } from './infra/services/websocket-service';
 import { RoomRepository } from './infra/repositories/room-repository';
 import { MessageRepository } from './infra/repositories/message-repository';
 import { env } from './infra/config/env';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const server = createServer(app);
@@ -39,10 +40,28 @@ app.use((err: Error, req: Request, res: Response, _: NextFunction) => {
 const io = new Server(server, {
   cors: {
     origin: [env.FRONTEND_URL],
-    methods: ['GET', 'POST'],
     credentials: true,
     allowedHeaders: ['Content-Type'],
   },
+});
+
+io.use((socket, next) => {
+  console.log('caiu aqui');
+  const cookies = socket.request['headers']['cookie'];
+  const cookieString = cookies
+    ?.split(';')
+    .find(cookie => cookie.includes('auth-token'));
+  const token = cookieString?.split('=')[1];
+  if (!cookieString || !token) {
+    return next(new AppError('Unauthorized', 401));
+  }
+
+  try {
+    jwt.verify(token, env.JWT_SECRET);
+  } catch {
+    return next(new AppError('Unauthorized', 401));
+  }
+  next();
 });
 
 const roomRepository = new RoomRepository();
