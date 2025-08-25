@@ -93,7 +93,6 @@ export const useAuth = () => {
 };
 
 export const useSignUp = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation({
