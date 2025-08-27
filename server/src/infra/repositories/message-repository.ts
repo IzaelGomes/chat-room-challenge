@@ -51,4 +51,63 @@ export class MessageRepository implements MessageRepositoryInterface {
       user: message.user,
     }));
   }
+
+  async updateMessage(messageId: string, content: string): Promise<Message> {
+    const updatedMessage = await prisma.message.update({
+      where: { id: messageId },
+      data: { content },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+
+    return {
+      id: updatedMessage.id,
+      content: updatedMessage.content,
+      createdAt: updatedMessage.createdAt,
+      updatedAt: updatedMessage.updatedAt,
+      roomId: updatedMessage.roomId,
+      userId: updatedMessage.userId,
+      user: updatedMessage.user,
+    };
+  }
+
+  async deleteMessage(messageId: string): Promise<void> {
+    await prisma.message.delete({
+      where: { id: messageId },
+    });
+  }
+
+  async findMessageById(messageId: string): Promise<Message | null> {
+    const message = await prisma.message.findUnique({
+      where: { id: messageId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+
+    if (!message) {
+      return null;
+    }
+
+    return {
+      id: message.id,
+      content: message.content,
+      createdAt: message.createdAt,
+      updatedAt: message.updatedAt,
+      roomId: message.roomId,
+      userId: message.userId,
+      user: message.user,
+    };
+  }
 }
