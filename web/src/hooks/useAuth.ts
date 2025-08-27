@@ -1,6 +1,4 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import { toaster } from '../components/ui/toaster';
 
 interface User {
   id: string;
@@ -93,81 +91,30 @@ export const useAuth = () => {
 };
 
 export const useSignUp = () => {
-  const navigate = useNavigate();
-
   return useMutation({
     mutationFn: authApi.signUp,
-    onSuccess: (data) => {
-      toaster.create({
-        title: 'Conta criada com sucesso!',
-        description: `Bem-vindo, ${data.user.username}!`,
-        type: 'success',
-        duration: 3000,
-      });
-      navigate('/auth/signin');
-    },
-    onError: (error: Error) => {
-      toaster.create({
-        title: 'Erro ao criar conta',
-        description: error.message,
-        type: 'error',
-        duration: 5000,
-      });
-    },
   });
 };
 
 export const useSignIn = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: authApi.signIn,
     onSuccess: (data) => {
       queryClient.setQueryData(['auth'], data);
-      toaster.create({
-        title: 'Login realizado com sucesso!',
-        description: `Bem-vindo de volta, ${data.user.username}!`,
-        type: 'success',
-        duration: 3000,
-      });
-      navigate('/rooms');
-    },
-    onError: (error: Error) => {
-      toaster.create({
-        title: 'Erro ao fazer login',
-        description: error.message,
-        type: 'error',
-        duration: 5000,
-      });
     },
   });
 };
 
 export const useSignOut = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: authApi.signOut,
     onSuccess: () => {
       queryClient.setQueryData(['auth'], null);
       queryClient.invalidateQueries({ queryKey: ['rooms'] });
-      toaster.create({
-        title: 'Logout realizado',
-        description: 'Você foi desconectado com sucesso.',
-        type: 'info',
-        duration: 3000,
-      });
-      navigate('/');
-    },
-    onError: (error: Error) => {
-      toaster.create({
-        title: 'Erro ao fazer logout',
-        description: error.message,
-        type: 'error',
-        duration: 5000,
-      });
     },
   });
 };

@@ -17,6 +17,8 @@ import {
 } from 'react-icons/fi';
 import { useColorMode } from '../ui/color-mode';
 import { useAuth, useSignOut } from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { toaster } from '../ui/toaster';
 
 interface HeaderProps {
   roomName?: string;
@@ -26,10 +28,24 @@ interface HeaderProps {
 function Header({ roomName = 'Selecione uma sala', onMenuClick }: HeaderProps) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { data: auth } = useAuth();
-  const signOutMutation = useSignOut();
+  const { mutateAsync: signOut } = useSignOut();
+  const navigate = useNavigate();
 
-  const handleSignOut = () => {
-    signOutMutation.mutate();
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toaster.success({
+        title: 'Logout realizado com sucesso',
+        description: 'Você foi desconectado com sucesso.',
+      });
+      navigate('/auth/signin');
+    } catch (error) {
+      toaster.error({
+        title: 'Erro ao fazer logout',
+        description:
+          error instanceof Error ? error.message : 'Erro desconhecido',
+      });
+    }
   };
 
   return (

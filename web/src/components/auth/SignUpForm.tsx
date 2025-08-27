@@ -10,8 +10,9 @@ import {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSignUp, type SignUpData } from '../../hooks/useAuth';
+import { toaster } from '../ui/toaster';
 
 const signUpSchema = z
   .object({
@@ -39,7 +40,8 @@ const signUpSchema = z
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
 function SignUpForm() {
-  const signUpMutation = useSignUp();
+  const { mutateAsync, isPending } = useSignUp();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -50,12 +52,25 @@ function SignUpForm() {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: SignUpFormData) => {
+  const onSubmit = async (data: SignUpFormData) => {
     const signUpData: SignUpData = {
       username: data.username,
       password: data.password,
     };
-    signUpMutation.mutate(signUpData);
+    try {
+      await mutateAsync(signUpData);
+      toaster.success({
+        title: 'Conta criada com sucesso',
+        description: 'Você pode fazer login agora',
+      });
+    } catch (error) {
+      toaster.error({
+        title: 'Erro ao criar conta',
+        description:
+          error instanceof Error ? error.message : 'Erro desconhecido',
+      });
+    }
+    navigate('/auth/signin');
   };
 
   return (
@@ -172,7 +187,7 @@ function SignUpForm() {
               colorScheme='teal'
               size={{ base: 'md', md: 'lg' }}
               w='full'
-              loading={signUpMutation.isPending}
+              loading={isPending}
               loadingText='Criando conta...'
               disabled={!isValid}
             >

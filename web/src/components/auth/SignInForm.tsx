@@ -10,8 +10,9 @@ import {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSignIn, type SignInData } from '../../hooks/useAuth';
+import { toaster } from '../ui/toaster';
 
 const signInSchema = z.object({
   username: z.string().min(1, 'Username é obrigatório'),
@@ -21,7 +22,8 @@ const signInSchema = z.object({
 type SignInFormData = z.infer<typeof signInSchema>;
 
 function SignInForm() {
-  const signInMutation = useSignIn();
+  const { mutateAsync, isPending } = useSignIn();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -32,12 +34,25 @@ function SignInForm() {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: SignInFormData) => {
-    const signInData: SignInData = {
-      username: data.username,
-      password: data.password,
-    };
-    signInMutation.mutate(signInData);
+  const onSubmit = async (data: SignInFormData) => {
+    try {
+      const signInData: SignInData = {
+        username: data.username,
+        password: data.password,
+      };
+      await mutateAsync(signInData);
+      navigate('/');
+      toaster.success({
+        title: 'Login realizado com sucesso',
+        description: 'Você está sendo redirecionado para a sala selecionada',
+      });
+    } catch (error) {
+      toaster.error({
+        title: 'Erro ao fazer login',
+        description:
+          error instanceof Error ? error.message : 'Erro desconhecido',
+      });
+    }
   };
 
   return (
@@ -125,7 +140,7 @@ function SignInForm() {
               colorScheme='teal'
               size={{ base: 'md', md: 'lg' }}
               w='full'
-              loading={signInMutation.isPending}
+              loading={isPending}
               loadingText='Entrando...'
               disabled={!isValid}
             >
