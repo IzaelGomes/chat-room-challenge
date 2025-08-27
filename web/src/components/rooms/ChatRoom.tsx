@@ -1,70 +1,71 @@
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Box,
   VStack,
   HStack,
   Text,
-  Input,
   Button,
   Flex,
   Skeleton,
   SkeletonText,
   Heading,
 } from '@chakra-ui/react';
-import { useState, useEffect, useRef, useCallback } from 'react';
 import { FiSend, FiHash } from 'react-icons/fi';
 import { useWebSocket } from '../../hooks/useWebSocket';
 import { useRoom } from '../../hooks/useRooms';
 import { useAuth } from '../../hooks/useAuth';
 import BallonMessage from './BallonMessage';
+import type { Message } from '@/types/message';
+import InputMessage from './InputMessage';
 
 interface ChatRoomProps {
   roomId: string;
 }
 
-export interface Message {
-  id: string;
-  content: string;
-  roomId: string;
-  userId: string;
-  user: {
-    id: string;
-    username: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
-
 function ChatRoom({ roomId }: ChatRoomProps) {
-  const [messageInput, setMessageInput] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [message, setMessage] = useState('');
+  const messagesContainerBottomRef = useRef<HTMLDivElement>(null);
 
   const {
     data: room,
     isLoading: isLoadingRoom,
     error: roomError,
+    isError: isErrorRoom,
   } = useRoom(roomId);
   const {
     messages,
     isConnected,
-    error: wsError,
+    error: errorWebSocket,
     sendMessage,
-  } = useWebSocket({ roomId });
+    joinRoom,
+    leaveRoom,
+  } = useWebSocket();
   const { data: authData } = useAuth();
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  useEffect(() => {
+    if (roomId) {
+      joinRoom(roomId);
+    }
+
+    return () => {
+      leaveRoom();
+    };
+  }, [roomId, joinRoom, leaveRoom]);
+
+  const scrollToBottom = useCallback(() => {
+    messagesContainerBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
   const handleSendMessage = useCallback(() => {
-    if (messageInput.trim()) {
-      sendMessage(messageInput);
-      setMessageInput('');
+    if (message.trim()) {
+      sendMessage(message);
+      setMessage('');
     }
-  }, [messageInput, sendMessage]);
+  }, [message, sendMessage]);
 
   const handleKeyPress = useCallback(
     (e: React.KeyboardEvent) => {
@@ -74,6 +75,13 @@ function ChatRoom({ roomId }: ChatRoomProps) {
       }
     },
     [handleSendMessage]
+  );
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setMessage(e.target.value);
+    },
+    []
   );
 
   if (isLoadingRoom) {
@@ -88,7 +96,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
     );
   }
 
-  if (roomError) {
+  if (isErrorRoom) {
     return (
       <Flex h='full' align='center' justify='center' p={8}>
         <Box
@@ -135,7 +143,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
         </HStack>
       </Box>
 
-      {wsError && (
+      {errorWebSocket && (
         <Box p={4}>
           <Box
             p={3}
@@ -146,7 +154,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
             _dark={{ bg: 'red.900', borderColor: 'red.700' }}
           >
             <Text fontSize='sm' color='red.600' _dark={{ color: 'red.400' }}>
-              {wsError}
+              {errorWebSocket}
             </Text>
           </Box>
         </Box>
@@ -172,7 +180,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
             <BallonMessage key={message.id} message={message} />
           ))
         )}
-        <div ref={messagesEndRef} />
+        <Box ref={messagesContainerBottomRef} />
       </VStack>
 
       <Box
@@ -183,9 +191,9 @@ function ChatRoom({ roomId }: ChatRoomProps) {
         _dark={{ borderColor: 'gray.700', bg: 'gray.800' }}
       >
         <HStack gap={2}>
-          <Input
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
+          <InputMessage
+            value={message}
+            onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             placeholder='Digite sua mensagem...'
             disabled={!isConnected || !authData}
@@ -194,7 +202,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
           <Button
             colorScheme='teal'
             onClick={handleSendMessage}
-            disabled={!messageInput.trim() || !isConnected || !authData}
+            disabled={!message.trim() || !isConnected || !authData}
             minW='auto'
           >
             <FiSend />
