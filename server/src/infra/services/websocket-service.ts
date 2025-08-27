@@ -125,11 +125,6 @@ export class WebSocketService {
           user: { id: string; username: string };
         }) => {
           try {
-            if (!data.user) {
-              socket.emit('error', { message: 'Usuário não autenticado' });
-              return;
-            }
-
             await this.getRoomByIdUseCase.execute({ id: data.roomId });
 
             const newMessage = await this.messageRepository.createMessage({
