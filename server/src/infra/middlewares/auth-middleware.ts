@@ -9,15 +9,8 @@ interface JwtPayload {
   username: string;
 }
 
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    username: string;
-  };
-}
-
 export const authMiddleware = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {

@@ -44,7 +44,7 @@ export class AuthController {
   }
 
   async me(req: Request, res: Response): Promise<void> {
-    const user = (req as any).user;
+    const user = req.user;
     res.json({ user });
   }
 }
