@@ -26,6 +26,7 @@ Uma aplicação de chat em tempo real com salas de conversa, autenticação de u
 - **Node.js** (versão 18 ou superior)
 - **npm**
 - **Git**
+- **postgresql instalado local ou Docker**
 
 ## Setup do Projeto
 
@@ -108,5 +109,6 @@ VITE_API_URL=http://localhost:3001
 ```bash
 npm run dev
 ```
+
 
 
