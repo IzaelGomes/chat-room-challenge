@@ -66,7 +66,8 @@ JWT_SECRET=sua_chave_secreta_aqui
 **Suba o banco de dados:**
 
 ```bash
-# Suba o PostgreSQL usando Docker
+
+# Instale o postgresql ou suba o PostgreSQL usando Docker
 docker-compose up -d
 
 # Execute as migrações
@@ -107,4 +108,5 @@ VITE_API_URL=http://localhost:3001
 ```bash
 npm run dev
 ```
+
 
