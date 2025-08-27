@@ -9,14 +9,28 @@ function Rooms() {
 
   return (
     <ChatLayout>
-      <Flex h='full' align='center' justify='center' p={8}>
-        <VStack gap={8} textAlign='center' maxW='500px'>
+      <Flex h='full' align='center' justify='center' p={{ base: 4, md: 8 }}>
+        <VStack
+          gap={{ base: 6, md: 8 }}
+          textAlign='center'
+          maxW='500px'
+          w='full'
+        >
           <Box>
-            <Icon as={FiMessageSquare} boxSize='64px' color='teal.500' mb={4} />
-            <Text fontSize='2xl' fontWeight='bold' mb={2}>
+            <Icon
+              as={FiMessageSquare}
+              boxSize={{ base: '48px', md: '64px' }}
+              color='teal.500'
+              mb={4}
+            />
+            <Text fontSize={{ base: 'xl', md: '2xl' }} fontWeight='bold' mb={2}>
               Bem-vindo ao Chat Rooms!
             </Text>
-            <Text color='gray.600' _dark={{ color: 'gray.400' }} fontSize='lg'>
+            <Text
+              color='gray.600'
+              _dark={{ color: 'gray.400' }}
+              fontSize={{ base: 'md', md: 'lg' }}
+            >
               Conecte-se com outras pessoas em salas de conversa organizadas por
               tópicos.
             </Text>
@@ -24,7 +38,7 @@ function Rooms() {
 
           <VStack gap={4} w='full'>
             <Box
-              p={6}
+              p={{ base: 4, md: 6 }}
               bg='white'
               borderRadius='lg'
               border='1px'
@@ -34,10 +48,12 @@ function Rooms() {
             >
               <Flex align='center' mb={3}>
                 <Icon as={FiPlus} mr={3} color='teal.500' />
-                <Text fontWeight='semibold'>Criar Nova Sala</Text>
+                <Text fontWeight='semibold' fontSize={{ base: 'sm', md: 'md' }}>
+                  Criar Nova Sala
+                </Text>
               </Flex>
               <Text
-                fontSize='sm'
+                fontSize={{ base: 'xs', md: 'sm' }}
                 color='gray.600'
                 _dark={{ color: 'gray.400' }}
                 mb={4}
@@ -48,6 +64,7 @@ function Rooms() {
               <Button
                 colorScheme='teal'
                 w='full'
+                size={{ base: 'md', md: 'lg' }}
                 onClick={() => setIsCreateModalOpen(true)}
               >
                 Criar Primeira Sala

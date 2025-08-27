@@ -41,13 +41,13 @@ function BallonMessage({ message }: BallonMessageProps) {
     <>
       <Box
         key={message.id}
-        p={3}
+        p={{ base: 2, md: 3 }}
         bg='white'
         borderRadius='lg'
         border='1px'
         borderColor='gray.200'
         _dark={{ bg: 'gray.800', borderColor: 'gray.700' }}
-        maxW='80%'
+        maxW={{ base: '90%', sm: '85%', md: '80%' }}
         alignSelf={isSelfUser ? 'flex-end' : 'flex-start'}
         _hover={{
           '& .message-actions': {
@@ -56,7 +56,14 @@ function BallonMessage({ message }: BallonMessageProps) {
         }}
       >
         <Flex justify='space-between' align='center' mb={2} gap={2}>
-          <Text fontSize='sm' fontWeight='medium'>
+          <Text
+            fontSize={{ base: 'xs', md: 'sm' }}
+            fontWeight='medium'
+            overflow='hidden'
+            textOverflow='ellipsis'
+            whiteSpace='nowrap'
+            maxW='150px'
+          >
             {message.user?.username || 'Usuário'}
           </Text>
 
@@ -65,10 +72,12 @@ function BallonMessage({ message }: BallonMessageProps) {
           )}
         </Flex>
 
-        <Text mb={2}>{message.content}</Text>
+        <Text mb={2} fontSize={{ base: 'sm', md: 'md' }} wordBreak='break-word'>
+          {message.content}
+        </Text>
 
         <Flex justify='flex-end'>
-          <Text fontSize='xs' color='gray.500'>
+          <Text fontSize={{ base: '2xs', sm: 'xs' }} color='gray.500'>
             {formatTime(message.createdAt)}
           </Text>
         </Flex>

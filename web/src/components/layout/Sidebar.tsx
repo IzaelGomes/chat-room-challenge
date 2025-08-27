@@ -23,18 +23,18 @@ function Sidebar() {
     <>
       <Flex direction='column' h='full'>
         <Box
-          p={4}
+          p={{ base: 3, md: 4 }}
           borderBottom='1px'
           borderColor='gray.200'
           _dark={{ borderColor: 'gray.700' }}
         >
           <Flex align='center' justify='space-between'>
-            <Heading size='md' color='teal.500'>
+            <Heading size={{ base: 'sm', md: 'md' }} color='teal.500'>
               Chat Rooms
             </Heading>
             <Button
               aria-label='Criar nova sala'
-              size='sm'
+              size={{ base: 'xs', md: 'sm' }}
               variant='ghost'
               colorScheme='teal'
               onClick={() => setIsCreateModalOpen(true)}
@@ -44,9 +44,15 @@ function Sidebar() {
           </Flex>
         </Box>
 
-        <VStack flex='1' p={3} align='stretch' gap={1} overflowY='auto'>
+        <VStack
+          flex='1'
+          p={{ base: 2, md: 3 }}
+          align='stretch'
+          gap={1}
+          overflowY='auto'
+        >
           <Text
-            fontSize='xs'
+            fontSize={{ base: '2xs', md: 'xs' }}
             fontWeight='bold'
             color='gray.600'
             _dark={{ color: 'gray.400' }}
@@ -66,30 +72,34 @@ function Sidebar() {
 
           {error && (
             <Box
-              p={3}
+              p={{ base: 2, md: 3 }}
               bg='red.50'
               borderRadius='md'
               border='1px'
               borderColor='red.200'
               _dark={{ bg: 'red.900', borderColor: 'red.700' }}
             >
-              <Text fontSize='sm' color='red.600' _dark={{ color: 'red.400' }}>
+              <Text
+                fontSize={{ base: 'xs', md: 'sm' }}
+                color='red.600'
+                _dark={{ color: 'red.400' }}
+              >
                 Erro ao carregar salas
               </Text>
             </Box>
           )}
 
           {rooms && rooms.length === 0 && (
-            <Box p={4} textAlign='center'>
+            <Box p={{ base: 3, md: 4 }} textAlign='center'>
               <Text
-                fontSize='sm'
+                fontSize={{ base: 'xs', md: 'sm' }}
                 color='gray.600'
                 _dark={{ color: 'gray.400' }}
               >
                 Nenhuma sala encontrada
               </Text>
               <Button
-                size='sm'
+                size={{ base: 'xs', md: 'sm' }}
                 variant='ghost'
                 colorScheme='teal'
                 mt={2}
@@ -105,7 +115,7 @@ function Sidebar() {
               key={room.id}
               variant='ghost'
               justifyContent='flex-start'
-              size='sm'
+              size={{ base: 'xs', md: 'sm' }}
               fontWeight='normal'
               color={roomId === room.id ? 'teal.600' : 'gray.600'}
               bg={roomId === room.id ? 'teal.50' : 'transparent'}
@@ -119,14 +129,16 @@ function Sidebar() {
             >
               <Flex align='center' w='full'>
                 <FiHash style={{ marginRight: '8px' }} />
-                <Text truncate>{room.name}</Text>
+                <Text truncate fontSize={{ base: 'xs', md: 'sm' }}>
+                  {room.name}
+                </Text>
               </Flex>
             </Button>
           ))}
         </VStack>
 
         <Box
-          p={3}
+          p={{ base: 2, md: 3 }}
           borderTop='1px'
           borderColor='gray.200'
           _dark={{ borderColor: 'gray.700' }}
@@ -135,12 +147,12 @@ function Sidebar() {
             w='full'
             colorScheme='teal'
             variant='outline'
-            size='sm'
+            size={{ base: 'xs', md: 'sm' }}
             onClick={() => setIsCreateModalOpen(true)}
           >
             <Flex align='center'>
               <FiPlus style={{ marginRight: '8px' }} />
-              Nova Sala
+              <Text fontSize={{ base: 'xs', md: 'sm' }}>Nova Sala</Text>
             </Flex>
           </Button>
         </Box>

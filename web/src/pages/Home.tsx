@@ -6,13 +6,17 @@ function Home() {
   const { data: auth, isLoading } = useAuth();
 
   return (
-    <Box p={8} maxW='800px' mx='auto'>
-      <VStack gap={6} align='stretch'>
-        <Heading size='2xl' textAlign='center' color='teal.500'>
+    <Box p={{ base: 4, md: 8 }} maxW='800px' mx='auto' w='full'>
+      <VStack gap={{ base: 4, md: 6 }} align='stretch'>
+        <Heading
+          size={{ base: 'xl', md: '2xl' }}
+          textAlign='center'
+          color='teal.500'
+        >
           Chat Room
         </Heading>
         <Text
-          fontSize='lg'
+          fontSize={{ base: 'md', md: 'lg' }}
           textAlign='center'
           color='gray.600'
           _dark={{ color: 'gray.400' }}
@@ -22,14 +26,22 @@ function Home() {
         </Text>
 
         {!isLoading && (
-          <VStack gap={4}>
+          <VStack gap={{ base: 3, md: 4 }}>
             {auth ? (
               <VStack gap={3}>
-                <Text color='gray.700' _dark={{ color: 'gray.300' }}>
+                <Text
+                  color='gray.700'
+                  _dark={{ color: 'gray.300' }}
+                  fontSize={{ base: 'sm', md: 'md' }}
+                >
                   Olá, {auth.user.username}!
                 </Text>
                 <Link to='/rooms'>
-                  <Button colorScheme='teal' size='lg' w='200px'>
+                  <Button
+                    colorScheme='teal'
+                    size={{ base: 'md', md: 'lg' }}
+                    w={{ base: '180px', md: '200px' }}
+                  >
                     Entrar nas Salas
                   </Button>
                 </Link>
@@ -40,12 +52,17 @@ function Home() {
                   textAlign='center'
                   color='gray.600'
                   _dark={{ color: 'gray.400' }}
+                  fontSize={{ base: 'sm', md: 'md' }}
                 >
                   Faça login ou crie uma conta para começar a conversar
                 </Text>
-                <HStack gap={3}>
+                <VStack gap={3} display={{ base: 'flex', sm: 'none' }}>
                   <Link to='/auth/signin'>
-                    <Button colorScheme='teal' size='lg' w='150px'>
+                    <Button
+                      colorScheme='teal'
+                      size={{ base: 'md', md: 'lg' }}
+                      w='full'
+                    >
                       Entrar
                     </Button>
                   </Link>
@@ -53,7 +70,29 @@ function Home() {
                     <Button
                       variant='outline'
                       colorScheme='teal'
-                      size='lg'
+                      size={{ base: 'md', md: 'lg' }}
+                      w='full'
+                    >
+                      Criar Conta
+                    </Button>
+                  </Link>
+                </VStack>
+
+                <HStack gap={3} display={{ base: 'none', sm: 'flex' }}>
+                  <Link to='/auth/signin'>
+                    <Button
+                      colorScheme='teal'
+                      size={{ base: 'md', md: 'lg' }}
+                      w='150px'
+                    >
+                      Entrar
+                    </Button>
+                  </Link>
+                  <Link to='/auth/signup'>
+                    <Button
+                      variant='outline'
+                      colorScheme='teal'
+                      size={{ base: 'md', md: 'lg' }}
                       w='150px'
                     >
                       Criar Conta

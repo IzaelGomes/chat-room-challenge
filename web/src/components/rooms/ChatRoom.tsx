@@ -124,7 +124,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
   return (
     <Flex direction='column' h='full'>
       <Box
-        p={4}
+        p={{ base: 3, md: 4 }}
         borderBottom='1px'
         borderColor='gray.200'
         bg='white'
@@ -132,7 +132,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
       >
         <HStack>
           <FiHash color='var(--chakra-colors-teal-500)' />
-          <Heading size='md' color='teal.500'>
+          <Heading size={{ base: 'sm', md: 'md' }} color='teal.500'>
             {room?.name}
           </Heading>
           {!isConnected && (
@@ -144,7 +144,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
       </Box>
 
       {errorWebSocket && (
-        <Box p={4}>
+        <Box p={{ base: 3, md: 4 }}>
           <Box
             p={3}
             bg='red.50'
@@ -162,7 +162,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
 
       <VStack
         flex='1'
-        p={4}
+        p={{ base: 3, md: 4 }}
         align='stretch'
         gap={3}
         overflowY='auto'
@@ -171,7 +171,13 @@ function ChatRoom({ roomId }: ChatRoomProps) {
       >
         {messages.length === 0 ? (
           <Flex align='center' justify='center' h='full'>
-            <Text color='gray.500' _dark={{ color: 'gray.400' }}>
+            <Text
+              color='gray.500'
+              _dark={{ color: 'gray.400' }}
+              fontSize={{ base: 'sm', md: 'md' }}
+              textAlign='center'
+              px={4}
+            >
               Nenhuma mensagem ainda. Seja o primeiro a enviar uma mensagem!
             </Text>
           </Flex>
@@ -184,7 +190,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
       </VStack>
 
       <Box
-        p={4}
+        p={{ base: 3, md: 4 }}
         borderTop='1px'
         borderColor='gray.200'
         bg='white'
@@ -204,11 +210,17 @@ function ChatRoom({ roomId }: ChatRoomProps) {
             onClick={handleSendMessage}
             disabled={!message.trim() || !isConnected || !authData}
             minW='auto'
+            size={{ base: 'sm', md: 'md' }}
           >
             <FiSend />
           </Button>
         </HStack>
-        <Text fontSize='xs' color='gray.500' mt={1}>
+        <Text
+          fontSize='xs'
+          color='gray.500'
+          mt={1}
+          display={{ base: 'none', sm: 'block' }}
+        >
           Pressione Enter para enviar, Shift+Enter para nova linha
         </Text>
       </Box>

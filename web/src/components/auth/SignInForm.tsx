@@ -41,21 +41,34 @@ function SignInForm() {
   };
 
   return (
-    <Box maxW='400px' mx='auto' p={6}>
-      <VStack gap={6} align='stretch'>
+    <Box
+      maxW={{ base: '90%', sm: '400px' }}
+      mx='auto'
+      p={{ base: 4, md: 6 }}
+      w='full'
+    >
+      <VStack gap={{ base: 4, md: 6 }} align='stretch'>
         <Box textAlign='center'>
-          <Heading size='lg' mb={2}>
+          <Heading size={{ base: 'md', md: 'lg' }} mb={2}>
             Entrar
           </Heading>
-          <Text color='gray.600' _dark={{ color: 'gray.400' }}>
+          <Text
+            color='gray.600'
+            _dark={{ color: 'gray.400' }}
+            fontSize={{ base: 'sm', md: 'md' }}
+          >
             Faça login para continuar
           </Text>
         </Box>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <VStack gap={4} align='stretch'>
+          <VStack gap={{ base: 3, md: 4 }} align='stretch'>
             <Box>
-              <Text fontSize='sm' fontWeight='medium' mb={2}>
+              <Text
+                fontSize={{ base: 'xs', md: 'sm' }}
+                fontWeight='medium'
+                mb={2}
+              >
                 Username{' '}
                 <Text as='span' color='red.500'>
                   *
@@ -65,16 +78,25 @@ function SignInForm() {
                 {...register('username')}
                 placeholder='Digite seu username'
                 _invalid={{ borderColor: 'red.500' }}
+                size={{ base: 'md', md: 'lg' }}
               />
               {errors.username && (
-                <Text fontSize='sm' color='red.500' mt={1}>
+                <Text
+                  fontSize={{ base: 'xs', md: 'sm' }}
+                  color='red.500'
+                  mt={1}
+                >
                   {errors.username.message}
                 </Text>
               )}
             </Box>
 
             <Box>
-              <Text fontSize='sm' fontWeight='medium' mb={2}>
+              <Text
+                fontSize={{ base: 'xs', md: 'sm' }}
+                fontWeight='medium'
+                mb={2}
+              >
                 Senha{' '}
                 <Text as='span' color='red.500'>
                   *
@@ -85,9 +107,14 @@ function SignInForm() {
                 type='password'
                 placeholder='Digite sua senha'
                 _invalid={{ borderColor: 'red.500' }}
+                size={{ base: 'md', md: 'lg' }}
               />
               {errors.password && (
-                <Text fontSize='sm' color='red.500' mt={1}>
+                <Text
+                  fontSize={{ base: 'xs', md: 'sm' }}
+                  color='red.500'
+                  mt={1}
+                >
                   {errors.password.message}
                 </Text>
               )}
@@ -96,7 +123,7 @@ function SignInForm() {
             <Button
               type='submit'
               colorScheme='teal'
-              size='lg'
+              size={{ base: 'md', md: 'lg' }}
               w='full'
               loading={signInMutation.isPending}
               loadingText='Entrando...'
@@ -108,7 +135,11 @@ function SignInForm() {
         </form>
 
         <Box textAlign='center'>
-          <Text fontSize='sm' color='gray.600' _dark={{ color: 'gray.400' }}>
+          <Text
+            fontSize={{ base: 'xs', md: 'sm' }}
+            color='gray.600'
+            _dark={{ color: 'gray.400' }}
+          >
             Não tem uma conta?{' '}
             <ChakraLink
               asChild

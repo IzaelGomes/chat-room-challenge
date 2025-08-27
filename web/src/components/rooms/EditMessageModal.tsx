@@ -85,7 +85,7 @@ export default function EditMessageModal({
     <Dialog.Root
       open={isOpen}
       onOpenChange={(e) => !e.open && handleClose()}
-      size='md'
+      size={{ base: 'sm', md: 'md' }}
       placement='center'
     >
       <Portal>
@@ -93,13 +93,15 @@ export default function EditMessageModal({
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Editar Mensagem</Dialog.Title>
+              <Dialog.Title fontSize={{ base: 'md', md: 'lg' }}>
+                Editar Mensagem
+              </Dialog.Title>
             </Dialog.Header>
 
             <Dialog.Body>
-              <VStack gap={4} align='stretch'>
+              <VStack gap={{ base: 3, md: 4 }} align='stretch'>
                 <Text
-                  fontSize='sm'
+                  fontSize={{ base: 'xs', md: 'sm' }}
                   color='gray.600'
                   _dark={{ color: 'gray.400' }}
                 >
@@ -107,7 +109,11 @@ export default function EditMessageModal({
                 </Text>
 
                 <Box>
-                  <Text fontSize='sm' fontWeight='medium' mb={2}>
+                  <Text
+                    fontSize={{ base: 'xs', md: 'sm' }}
+                    fontWeight='medium'
+                    mb={2}
+                  >
                     Mensagem{' '}
                     <Text as='span' color='red.500'>
                       *
@@ -119,9 +125,14 @@ export default function EditMessageModal({
                     rows={4}
                     maxLength={1000}
                     borderColor={errors.content ? 'red.500' : 'gray.200'}
+                    size={{ base: 'sm', md: 'md' }}
                   />
                   {errors.content && (
-                    <Text fontSize='sm' color='red.500' mt={1}>
+                    <Text
+                      fontSize={{ base: 'xs', md: 'sm' }}
+                      color='red.500'
+                      mt={1}
+                    >
                       {errors.content.message}
                     </Text>
                   )}
@@ -131,7 +142,11 @@ export default function EditMessageModal({
 
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
-                <Button variant='outline' onClick={handleClose}>
+                <Button
+                  variant='outline'
+                  onClick={handleClose}
+                  size={{ base: 'sm', md: 'md' }}
+                >
                   Cancelar
                 </Button>
               </Dialog.ActionTrigger>
@@ -140,13 +155,14 @@ export default function EditMessageModal({
                 onClick={handleSubmit(onSubmit)}
                 loadingText='Salvando...'
                 disabled={!isValid}
+                size={{ base: 'sm', md: 'md' }}
               >
                 Salvar
               </Button>
             </Dialog.Footer>
 
             <Dialog.CloseTrigger asChild>
-              <CloseButton size='sm' />
+              <CloseButton size={{ base: 'sm', md: 'md' }} />
             </Dialog.CloseTrigger>
           </Dialog.Content>
         </Dialog.Positioner>

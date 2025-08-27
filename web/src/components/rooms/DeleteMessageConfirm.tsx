@@ -54,7 +54,7 @@ export default function DeleteMessageConfirm({
     <Dialog.Root
       open={isOpen}
       onOpenChange={(e) => !e.open && handleClose()}
-      size='md'
+      size={{ base: 'sm', md: 'md' }}
       placement='center'
     >
       <Portal>
@@ -62,13 +62,15 @@ export default function DeleteMessageConfirm({
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Deletar Mensagem</Dialog.Title>
+              <Dialog.Title fontSize={{ base: 'md', md: 'lg' }}>
+                Deletar Mensagem
+              </Dialog.Title>
             </Dialog.Header>
 
             <Dialog.Body>
-              <VStack gap={4} align='stretch'>
+              <VStack gap={{ base: 3, md: 4 }} align='stretch'>
                 <Text
-                  fontSize='sm'
+                  fontSize={{ base: 'xs', md: 'sm' }}
                   color='gray.600'
                   _dark={{ color: 'gray.400' }}
                 >
@@ -80,7 +82,11 @@ export default function DeleteMessageConfirm({
 
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
-                <Button variant='outline' onClick={handleClose}>
+                <Button
+                  variant='outline'
+                  onClick={handleClose}
+                  size={{ base: 'sm', md: 'md' }}
+                >
                   Cancelar
                 </Button>
               </Dialog.ActionTrigger>
@@ -89,13 +95,14 @@ export default function DeleteMessageConfirm({
                 onClick={handleDelete}
                 loading={isDeleting}
                 loadingText='Deletando...'
+                size={{ base: 'sm', md: 'md' }}
               >
                 Deletar
               </Button>
             </Dialog.Footer>
 
             <Dialog.CloseTrigger asChild>
-              <CloseButton size='sm' />
+              <CloseButton size={{ base: 'sm', md: 'md' }} />
             </Dialog.CloseTrigger>
           </Dialog.Content>
         </Dialog.Positioner>

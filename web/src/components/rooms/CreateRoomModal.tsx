@@ -79,7 +79,7 @@ function CreateRoomModal({ isOpen, onClose }: CreateRoomModalProps) {
     <Dialog.Root
       open={isOpen}
       onOpenChange={(e) => !e.open && handleClose()}
-      size='md'
+      size={{ base: 'sm', md: 'md' }}
       placement='center'
     >
       <Portal>
@@ -87,13 +87,15 @@ function CreateRoomModal({ isOpen, onClose }: CreateRoomModalProps) {
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Criar Nova Sala</Dialog.Title>
+              <Dialog.Title fontSize={{ base: 'md', md: 'lg' }}>
+                Criar Nova Sala
+              </Dialog.Title>
             </Dialog.Header>
 
             <Dialog.Body>
-              <VStack gap={4} align='stretch'>
+              <VStack gap={{ base: 3, md: 4 }} align='stretch'>
                 <Text
-                  fontSize='sm'
+                  fontSize={{ base: 'xs', md: 'sm' }}
                   color='gray.600'
                   _dark={{ color: 'gray.400' }}
                 >
@@ -101,7 +103,11 @@ function CreateRoomModal({ isOpen, onClose }: CreateRoomModalProps) {
                 </Text>
 
                 <Box>
-                  <Text fontSize='sm' fontWeight='medium' mb={2}>
+                  <Text
+                    fontSize={{ base: 'xs', md: 'sm' }}
+                    fontWeight='medium'
+                    mb={2}
+                  >
                     Nome da Sala{' '}
                     <Text as='span' color='red.500'>
                       *
@@ -112,9 +118,14 @@ function CreateRoomModal({ isOpen, onClose }: CreateRoomModalProps) {
                     placeholder='Ex: sala-geral, discussões, etc.'
                     maxLength={50}
                     borderColor={errors.name ? 'red.500' : 'gray.200'}
+                    size={{ base: 'sm', md: 'md' }}
                   />
                   {errors.name && (
-                    <Text fontSize='sm' color='red.500' mt={1}>
+                    <Text
+                      fontSize={{ base: 'xs', md: 'sm' }}
+                      color='red.500'
+                      mt={1}
+                    >
                       {errors.name.message}
                     </Text>
                   )}
@@ -124,7 +135,11 @@ function CreateRoomModal({ isOpen, onClose }: CreateRoomModalProps) {
 
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
-                <Button variant='outline' onClick={handleClose}>
+                <Button
+                  variant='outline'
+                  onClick={handleClose}
+                  size={{ base: 'sm', md: 'md' }}
+                >
                   Cancelar
                 </Button>
               </Dialog.ActionTrigger>
@@ -134,13 +149,14 @@ function CreateRoomModal({ isOpen, onClose }: CreateRoomModalProps) {
                 loading={createRoomMutation.isPending}
                 loadingText='Criando...'
                 disabled={!isValid}
+                size={{ base: 'sm', md: 'md' }}
               >
                 Criar Sala
               </Button>
             </Dialog.Footer>
 
             <Dialog.CloseTrigger asChild>
-              <CloseButton size='sm' />
+              <CloseButton size={{ base: 'sm', md: 'md' }} />
             </Dialog.CloseTrigger>
           </Dialog.Content>
         </Dialog.Positioner>

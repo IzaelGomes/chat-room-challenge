@@ -26,6 +26,8 @@ const InputMessage = memo(function InputMessage({
       placeholder={placeholder}
       disabled={disabled}
       maxLength={maxLength}
+      size={{ base: 'sm', md: 'md' }}
+      fontSize={{ base: 'sm', md: 'md' }}
     />
   );
 });

@@ -11,7 +11,12 @@ function MessageOptionsMenu({ onEdit, onDelete }: MessageOptionsMenuProps) {
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
-        <Button variant='outline' size='sm'>
+        <Button
+          variant='outline'
+          size={{ base: 'xs', md: 'sm' }}
+          minW='auto'
+          p={{ base: 1, md: 2 }}
+        >
           <FiMoreVertical />
         </Button>
       </Menu.Trigger>
