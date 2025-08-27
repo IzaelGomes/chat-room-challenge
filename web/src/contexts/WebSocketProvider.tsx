@@ -17,7 +17,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentRoomId, setCurrentRoomId] = useState<string | null>(null);
+  // const roomRef = useRef<string | null>(null);
   const socketRef = useRef<Socket | null>(null);
   const { data: authData } = useAuth();
 
@@ -101,7 +101,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     (roomId: string) => {
       if (socketRef.current && roomId && authData?.user) {
         socketRef.current.emit('join-room', roomId, authData.user);
-        setCurrentRoomId(roomId);
+
         setMessages([]);
         setError(null);
       }
@@ -109,19 +109,21 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     [authData?.user]
   );
 
-  const leaveRoom = useCallback(() => {
-    if (socketRef.current && currentRoomId && authData?.user) {
-      socketRef.current.emit('leave-room', currentRoomId, authData.user);
-      setCurrentRoomId(null);
-      setMessages([]);
-    }
-  }, [currentRoomId, authData?.user]);
+  const leaveRoom = useCallback(
+    (roomId: string) => {
+      if (socketRef.current && roomId && authData?.user) {
+        socketRef.current.emit('leave-room', roomId, authData.user);
+        setMessages([]);
+      }
+    },
+    [authData?.user]
+  );
 
   const sendMessage = useCallback(
-    (content: string) => {
-      if (socketRef.current && currentRoomId && content.trim() && authData) {
+    (content: string, roomId: string) => {
+      if (socketRef.current && roomId && content.trim() && authData) {
         socketRef.current.emit('send-message', {
-          roomId: currentRoomId,
+          roomId: roomId,
           content: content.trim(),
           user: authData.user,
         });
@@ -132,17 +134,17 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         });
       }
     },
-    [currentRoomId, authData]
+    [authData]
   );
 
   const updateMessage = useCallback(
-    (messageId: string, content: string) => {
-      if (socketRef.current && currentRoomId) {
+    (messageId: string, content: string, roomId: string) => {
+      if (socketRef.current && roomId) {
         socketRef.current.emit('update-message', {
           messageId,
           content: content.trim(),
           user: authData?.user,
-          roomId: currentRoomId,
+          roomId,
         });
       } else {
         toaster.create({
@@ -151,16 +153,16 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         });
       }
     },
-    [currentRoomId, authData]
+    [authData]
   );
 
   const deleteMessage = useCallback(
-    (messageId: string) => {
-      if (socketRef.current && currentRoomId && authData) {
+    (messageId: string, roomId: string) => {
+      if (socketRef.current && roomId && authData) {
         socketRef.current.emit('delete-message', {
           messageId,
           user: authData.user,
-          roomId: currentRoomId,
+          roomId,
         });
       } else {
         toaster.create({
@@ -169,7 +171,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         });
       }
     },
-    [currentRoomId, authData]
+    [authData]
   );
 
   const value = useMemo<WebSocketContextType>(
@@ -178,7 +180,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
       messages,
       isConnected,
       error,
-      currentRoomId,
       sendMessage,
       updateMessage,
       deleteMessage,
@@ -189,7 +190,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
       messages,
       isConnected,
       error,
-      currentRoomId,
       sendMessage,
       updateMessage,
       deleteMessage,

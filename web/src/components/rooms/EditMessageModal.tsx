@@ -27,16 +27,17 @@ const editMessageSchema = z.object({
 interface EditMessageModalProps {
   isOpen: boolean;
   onClose: () => void;
-  message: {
-    id: string;
-    content: string;
-  };
+  messageContent: string;
+  messageId: string;
+  roomId: string;
 }
 
 export default function EditMessageModal({
   isOpen,
   onClose,
-  message,
+  messageContent,
+  messageId,
+  roomId,
 }: EditMessageModalProps) {
   const { updateMessage } = useWebSocket();
 
@@ -54,14 +55,14 @@ export default function EditMessageModal({
   });
 
   useEffect(() => {
-    if (message) {
-      reset({ content: message.content });
+    if (messageContent) {
+      reset({ content: messageContent });
     }
-  }, [message, reset]);
+  }, [messageContent, reset]);
 
   const onSubmit = async (data: z.infer<typeof editMessageSchema>) => {
     try {
-      updateMessage(message.id, data.content);
+      updateMessage(messageId, data.content, roomId);
       handleClose();
       toaster.success({
         title: 'Mensagem atualizada',
@@ -76,7 +77,7 @@ export default function EditMessageModal({
   };
 
   const handleClose = () => {
-    reset({ content: message.content });
+    reset({ content: messageContent });
     onClose();
   };
 

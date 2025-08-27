@@ -7,12 +7,11 @@ export interface WebSocketContextType {
   messages: Message[];
   isConnected: boolean;
   error: string | null;
-  currentRoomId: string | null;
-  sendMessage: (content: string) => void;
-  updateMessage: (messageId: string, content: string) => void;
-  deleteMessage: (messageId: string) => void;
+  sendMessage: (content: string, roomId: string) => void;
+  updateMessage: (messageId: string, content: string, roomId: string) => void;
+  deleteMessage: (messageId: string, roomId: string) => void;
   joinRoom: (roomId: string) => void;
-  leaveRoom: () => void;
+  leaveRoom: (roomId: string) => void;
 }
 
 export const WebSocketContext = createContext<WebSocketContextType | undefined>(

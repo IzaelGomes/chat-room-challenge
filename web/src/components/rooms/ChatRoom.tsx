@@ -48,7 +48,7 @@ function ChatRoom({ roomId }: ChatRoomProps) {
     }
 
     return () => {
-      leaveRoom();
+      leaveRoom(roomId);
     };
   }, [roomId, joinRoom, leaveRoom]);
 
@@ -62,10 +62,10 @@ function ChatRoom({ roomId }: ChatRoomProps) {
 
   const handleSendMessage = useCallback(() => {
     if (message.trim()) {
-      sendMessage(message);
+      sendMessage(message, roomId);
       setMessage('');
     }
-  }, [message, sendMessage]);
+  }, [message, sendMessage, roomId]);
 
   const handleKeyPress = useCallback(
     (e: React.KeyboardEvent) => {

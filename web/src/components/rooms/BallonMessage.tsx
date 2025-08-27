@@ -77,13 +77,16 @@ function BallonMessage({ message }: BallonMessageProps) {
       <EditMessageModal
         isOpen={isEditModalOpen}
         onClose={handleCloseEditModal}
-        message={message}
+        messageContent={message.content}
+        messageId={message.id}
+        roomId={message.roomId}
       />
 
       <DeleteMessageConfirm
         isOpen={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
         messageId={message.id}
+        roomId={message.roomId}
       />
     </>
   );

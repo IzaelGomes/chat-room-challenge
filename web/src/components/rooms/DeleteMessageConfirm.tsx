@@ -14,12 +14,14 @@ interface DeleteMessageConfirmProps {
   isOpen: boolean;
   onClose: () => void;
   messageId: string;
+  roomId: string;
 }
 
 export default function DeleteMessageConfirm({
   isOpen,
   onClose,
   messageId,
+  roomId,
 }: DeleteMessageConfirmProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const { deleteMessage } = useWebSocket();
@@ -28,7 +30,7 @@ export default function DeleteMessageConfirm({
     setIsDeleting(true);
 
     try {
-      deleteMessage(messageId);
+      deleteMessage(messageId, roomId);
       toaster.success({
         title: 'Mensagem deletada',
         description: 'Mensagem deletada com sucesso',
