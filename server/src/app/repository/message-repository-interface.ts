@@ -14,4 +14,7 @@ export type Message = {
 export interface MessageRepositoryInterface {
   createMessage(message: Message): Promise<Message>;
   getMessagesByRoomId(roomId: string): Promise<Message[]>;
+  updateMessage(messageId: string, content: string): Promise<Message>;
+  deleteMessage(messageId: string): Promise<void>;
+  findMessageById(messageId: string): Promise<Message | null>;
 }
