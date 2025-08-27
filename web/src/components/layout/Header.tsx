@@ -1,4 +1,12 @@
-import { Flex, Text, Button, HStack, Menu, IconButton } from '@chakra-ui/react';
+import {
+  Flex,
+  Text,
+  Button,
+  HStack,
+  Menu,
+  IconButton,
+  Portal,
+} from '@chakra-ui/react';
 import {
   FiSun,
   FiMoon,
@@ -66,7 +74,6 @@ function Header({ roomName = 'Selecione uma sala', onMenuClick }: HeaderProps) {
                 variant='ghost'
                 size={{ base: 'xs', md: 'sm' }}
                 aria-label='Menu de usuário'
-                display={{ base: 'none', sm: 'flex' }}
               >
                 <FiUser style={{ marginRight: '8px' }} />
                 <Text display={{ base: 'none', md: 'inline' }}>
@@ -74,12 +81,20 @@ function Header({ roomName = 'Selecione uma sala', onMenuClick }: HeaderProps) {
                 </Text>
               </Button>
             </Menu.Trigger>
-            <Menu.Content>
-              <Menu.Item value='logout' onClick={handleSignOut} color='red.500'>
-                <FiLogOut style={{ marginRight: '8px' }} />
-                Sair
-              </Menu.Item>
-            </Menu.Content>
+            <Portal>
+              <Menu.Positioner>
+                <Menu.Content>
+                  <Menu.Item
+                    value='logout'
+                    onClick={handleSignOut}
+                    color='red.500'
+                  >
+                    <FiLogOut style={{ marginRight: '8px' }} />
+                    Sair
+                  </Menu.Item>
+                </Menu.Content>
+              </Menu.Positioner>
+            </Portal>
           </Menu.Root>
         )}
       </HStack>
