@@ -17,7 +17,7 @@ Uma aplicação de chat em tempo real com salas de conversa, autenticação de u
 - **React** com **TypeScript**
 - **Vite** como bundler
 - **Chakra UI** para componentes de interface
-- **React Query** para gerenciamento de estado
+- **React Query** para data fetching
 - **React Router** para navegação
 - **WebSocket** para comunicação em tempo real
 
@@ -107,3 +107,4 @@ VITE_API_URL=http://localhost:3001
 ```bash
 npm run dev
 ```
+
